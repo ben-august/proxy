@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<!-- saved from url=(0024)https://cnix.win/87.html -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="./Nginx SNI+Xray(Vless xtls &amp; Trojan xtls &amp; Vless gRPC &amp; Trojan gRPC) – CNIX_files/style.css" type="text/css" rel="stylesheet">
+    <link href="./Nginx SNI+Xray(Vless xtls &amp; Trojan xtls &amp; Vless gRPC &amp; Trojan gRPC) – CNIX_files/style(1).css" type="text/css" rel="stylesheet">
+    <title>Nginx SNI+Xray(Vless xtls &amp; Trojan xtls &amp; Vless gRPC &amp; Trojan gRPC) – CNIX</title>
+<meta name="robots" content="max-image-preview:large">
+<link rel="dns-prefetch" href="https://cdn.staticfile.org/">
+<link rel="dns-prefetch" href="https://s.w.org/">
+<link rel="stylesheet" id="wp-block-library-css" href="./Nginx SNI+Xray(Vless xtls &amp; Trojan xtls &amp; Vless gRPC &amp; Trojan gRPC) – CNIX_files/style.min.css" type="text/css" media="all">
+<style id="global-styles-inline-css" type="text/css">
+body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--duotone--dark-grayscale: url('#wp-duotone-dark-grayscale');--wp--preset--duotone--grayscale: url('#wp-duotone-grayscale');--wp--preset--duotone--purple-yellow: url('#wp-duotone-purple-yellow');--wp--preset--duotone--blue-red: url('#wp-duotone-blue-red');--wp--preset--duotone--midnight: url('#wp-duotone-midnight');--wp--preset--duotone--magenta-yellow: url('#wp-duotone-magenta-yellow');--wp--preset--duotone--purple-green: url('#wp-duotone-purple-green');--wp--preset--duotone--blue-orange: url('#wp-duotone-blue-orange');--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+</style>
+<script type="text/javascript" src="./Nginx SNI+Xray(Vless xtls &amp; Trojan xtls &amp; Vless gRPC &amp; Trojan gRPC) – CNIX_files/jquery.min.js" id="jquery-min-js"></script>
+<script type="text/javascript" src="./Nginx SNI+Xray(Vless xtls &amp; Trojan xtls &amp; Vless gRPC &amp; Trojan gRPC) – CNIX_files/qrcode.min.js" id="qrcode-js-js"></script>
+<script type="text/javascript" src="./Nginx SNI+Xray(Vless xtls &amp; Trojan xtls &amp; Vless gRPC &amp; Trojan gRPC) – CNIX_files/script.js" id="script-js-js"></script>
+<script type="text/javascript" src="./Nginx SNI+Xray(Vless xtls &amp; Trojan xtls &amp; Vless gRPC &amp; Trojan gRPC) – CNIX_files/prettify.js" id="prettify-js"></script>
+<script type="text/javascript" src="./Nginx SNI+Xray(Vless xtls &amp; Trojan xtls &amp; Vless gRPC &amp; Trojan gRPC) – CNIX_files/instantclick.min.js" id="instantclick-js"></script>
+<link rel="https://api.w.org/" href="https://cnix.win/wp-json/"><link rel="alternate" type="application/json" href="https://cnix.win/wp-json/wp/v2/posts/87"><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://cnix.win/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://cnix.win/wp-includes/wlwmanifest.xml"> 
+<link rel="canonical" href="https://cnix.win/87.html">
+<link rel="shortlink" href="https://cnix.win/?p=87">
+<link rel="icon" href="https://cnix.win/wp-content/uploads/2021/03/cropped-cloud-02-32x32.png" sizes="32x32">
+<link rel="icon" href="https://cnix.win/wp-content/uploads/2021/03/cropped-cloud-02-192x192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="https://cnix.win/wp-content/uploads/2021/03/cropped-cloud-02-180x180.png">
+<meta name="msapplication-TileImage" content="https://cnix.win/wp-content/uploads/2021/03/cropped-cloud-02-270x270.png">
+<style>#instantclick{position:fixed;top:0;left:0;width:100%;pointer-events:none;z-index:2147483647;transition:opacity .25s .1s}.instantclick-bar{background:#29d;width:100%;margin-left:-100%;height:2px;transition:all .25s}</style></head>
+<body class="">
+<script>
+        document.addEventListener("DOMContentLoaded", (event) => {
+        let mode = getComputedStyle(document.documentElement).getPropertyValue('content');
+        if (mode.indexOf('dark') > -1 && !$('body').is('.night')) {
+            $('.setting_tool .c ul li.night').click()
+        }
+        if (mode.indexOf('light') > -1 && !$('body').is('.undefined')) {
+            $('.setting_tool .c ul li.undefined').click()
+        }
+    });
+        $("body").addClass(localStorage.adams_color_style || "").addClass(localStorage.adams_font_style || "");
+</script>
+<!-- Header -->
+<header class="header">
+    <section class="container">
+        <hgroup itemscope="" itemtype="https://schema.org/WPHeader">
+            <h1 class="fullname">  Nginx SNI+Xray(Vless xtls &amp; Trojan xtls &amp; Vless gRPC &amp; Trojan gRPC)</h1>
+        </hgroup>
+        <div class="menu"><ul>
+<li id="menu-item-24" class=""><a></a></li>
+<li id="menu-item-30" class=""><a></a></li>
+</ul></div>
+<nav class="header_nav"><ul id="menu-top-menu" class="menu"><li id="menu-item-27" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-27"><a href="https://cnix.win/">首页</a></li>
+<li id="menu-item-39" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-39"><a href="https://cnix.win/category/software">软件</a></li>
+<li id="menu-item-45" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-45"><a href="https://cnix.win/category/digital">数码</a></li>
+<li id="menu-item-77" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-77"><a href="https://cnix.win/category/network">网络</a></li>
+</ul></nav>    </section>
+
+    <section class="infos">
+        <div class="container">
+                            <h2 class="fixed-title"></h2>
+                <!--<div class="fixed-menus"></div>-->
+
+                <div class="fields">
+                    <span><i class="czs-time-l"></i> <time datetime="2021-06-02T19:31:00+08:00" title="2021/06/02 19:31:00" itemprop="datePublished" pubdate="">11个月前</time></span> /
+                    <span><i class="czs-talk-l"></i> 0评</span> /
+                    <a href="javascript:;" data-action="topTop" data-id="87" class="dot-good ">
+                        <i class="czs-thumbs-up-l"></i><i class="czs-thumbs-up"></i>
+                        <span class="count">40</span>赞
+                    </a>
+                </div>
+
+                <div class="socials">
+                    <div class="donate">
+                        <a href="javascript:;"><i class="czs-coin-l s"></i><i class="czs-coin h"></i> 赏</a>
+                        <div class="window">
+                            <ul>
+                                                                                            </ul>
+                        </div>
+                    </div>
+                    <div class="share">
+                        <a href="javascript:void(0);" data-qrcode="//api.qrserver.com/v1/create-qr-code/?size=150x150&amp;margin=10&amp;data=https://cnix.win/87.html">
+                            <i class="czs-scan-l s"></i><i class="czs-qrcode-l h"></i> 码</a>
+                        <div class="qrcode"><div class="img-box" title="https://cnix.win/?p=87"><canvas width="256" height="256" style="display: none;"></canvas><img src="data:image/png;base64,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" style="display: block;"></div> <i>移动设备上继续阅读</i></div>
+                    </div>
+                </div>
+                    </div>
+    </section>
+</header><!-- Content -->
+<section class="container">
+    <article class="post_article" itemscope="" itemtype="https://schema.org/Article">
+        
+<p>Xray 是个好东西，它是 v2ray 的超集，支持多种协议，拥有更好的整体性能和 XTLS 等一系列增强。</p>
+
+
+
+<blockquote class="wp-block-quote"><p>Project X Github <a rel="external" href="https://github.com/XTLS" target="_blank">https://github.com/XTLS</a><br>Xray-core Github <a rel="external" href="https://github.com/XTLS/Xray-core" target="_blank">https://github.com/XTLS/Xray-core</a><br>Xray-install Github <a href="https://github.com/XTLS/Xray-install" target="_blank" rel="external">https://github.com/XTLS/Xray-install</a></p></blockquote>
+
+
+
+<p>接下来在云服务器上安装 Xay，同时实现 Vless、Trojan、gRPC 协议，共用443 端口。找一条好的线路，稍稍多花点钱是值得的，配置不要太复杂，线路好不需要用 CDN。网上有很多一键脚本，确实很方便。其实自己动手写配置也不复杂，下面的示例功能足够满足日常使用。</p>
+
+
+
+<h2>ECS 准备</h2>
+
+
+
+<p>云服务器推荐使用 Ubuntu 20.04 LTS，Debian 10 也可以。我个人更喜欢 Ubuntu，软件比较新，配置时遇到的问题较少。Ubuntu 系统资源占用比 Debian 大，但不用担心，我测试过 512M 内存的 云服务器，够用了。</p>
+
+
+
+<p>升级并安装必要软件</p>
+
+
+
+<pre class="wp-block-code"><code class="prettyprint prettyprinted" style=""><span class="pln">apt</span><span class="pun">-</span><span class="kwd">get</span><span class="pln"> update </span><span class="pun">&amp;&amp;</span><span class="pln"> apt</span><span class="pun">-</span><span class="kwd">get</span><span class="pln"> upgrade
+apt</span><span class="pun">-</span><span class="kwd">get</span><span class="pln"> install wget </span><span class="pun">-</span><span class="pln">y
+cp </span><span class="pun">/</span><span class="pln">usr</span><span class="pun">/</span><span class="pln">share</span><span class="pun">/</span><span class="pln">zoneinfo</span><span class="pun">/</span><span class="typ">Asia</span><span class="pun">/</span><span class="typ">Shanghai</span><span class="pln"> </span><span class="pun">/</span><span class="pln">etc</span><span class="pun">/</span><span class="pln">localtime
+hwclock </span><span class="pun">-</span><span class="pln">w</span></code></pre>
+
+
+
+<p>如果云服务器控制面板里有单独的防火墙面板，直接放行 80/443 端口。否则需要在系统里安装防火墙并配置。</p>
+
+
+
+<pre class="wp-block-code"><code class="prettyprint prettyprinted" style=""><span class="pln">apt</span><span class="pun">-</span><span class="kwd">get</span><span class="pln"> install ufw
+ufw enable
+
+</span><span class="com"># 检查UFW是否运行</span><span class="pln">
+ufw status
+
+</span><span class="com"># 设置默认规则</span><span class="pln">
+ufw </span><span class="kwd">default</span><span class="pln"> allow outgoing
+ufw </span><span class="kwd">default</span><span class="pln"> deny incoming
+
+</span><span class="com"># 允许以下端口通过防火墙</span><span class="pln">
+ufw allow </span><span class="lit">22</span><span class="pun">/</span><span class="pln">tcp
+ufw allow </span><span class="lit">80</span><span class="pun">/</span><span class="pln">tcp
+ufw allow </span><span class="lit">443</span><span class="pun">/</span><span class="pln">tcp
+
+</span><span class="com"># 列出当前UFW规则</span><span class="pln">
+ufw status verbose</span></code></pre>
+
+
+
+<h2><br><strong>申请和安装域名证书</strong></h2>
+
+
+
+<p>假如域名为 domain.com，我们申请 Wildcard 泛域名证书。域名的 nameserver 推荐使用 Cloudflare，解析速度极快，不推荐 NameSilo 的域名解析，速度极慢，很可能申请泛域名证书时超时报错。</p>
+
+
+
+<p>安装 acme.sh</p>
+
+
+
+<pre class="wp-block-code"><code class="prettyprint prettyprinted" style=""><span class="pln">wget </span><span class="pun">-</span><span class="pln">qO</span><span class="pun">-</span><span class="pln"> </span><span class="kwd">get</span><span class="pun">.</span><span class="pln">acme</span><span class="pun">.</span><span class="pln">sh </span><span class="pun">|</span><span class="pln"> bash 
+source </span><span class="pun">~/.</span><span class="pln">bashrc</span></code></pre>
+
+
+
+<p>设置 Cloudflare 的 Global API key</p>
+
+
+
+<pre class="wp-block-code"><code class="prettyprint prettyprinted" style=""><span class="kwd">export</span><span class="pln"> CF_Key</span><span class="pun">=</span><span class="str">"xxxxxx"</span><span class="pln">
+</span><span class="kwd">export</span><span class="pln"> CF_Email</span><span class="pun">=</span><span class="str">"xxxxxx"</span></code></pre>
+
+
+
+<p>acme.sh 默认使用 ZeroSSL 申请证书，但是申请过程偶尔会不顺，建议更换默认服务商 Let's Encrypt。</p>
+
+
+
+<pre class="wp-block-code"><code class="prettyprint prettyprinted" style=""><span class="pln">acme</span><span class="pun">.</span><span class="pln">sh </span><span class="pun">--</span><span class="kwd">set</span><span class="pun">-</span><span class="kwd">default</span><span class="pun">-</span><span class="pln">ca </span><span class="pun">--</span><span class="pln">server letsencrypt</span></code></pre>
+
+
+
+<p>acme.sh 实现了 acme 协议支持的所有验证协议，一般有两种方式验证，http 和 dns 验证。由于 Wildcard 证书验证只支持 dns 验证，不支持 http 验证，所以要使用 dns api 模式。推荐申请 ECC 证书。</p>
+
+
+
+<pre class="wp-block-code"><code class="prettyprint prettyprinted" style=""><span class="pln">acme</span><span class="pun">.</span><span class="pln">sh </span><span class="pun">--</span><span class="pln">issue </span><span class="pun">--</span><span class="pln">dns dns_cf </span><span class="pun">-</span><span class="pln">d domain</span><span class="pun">.</span><span class="pln">com </span><span class="pun">-</span><span class="pln">d </span><span class="str">'*.domain.com'</span><span class="pln"> </span><span class="pun">-</span><span class="pln">k ec</span><span class="pun">-</span><span class="lit">256</span></code></pre>
+
+
+
+<p>安装证书</p>
+
+
+
+<pre class="wp-block-code"><code class="prettyprint prettyprinted" style=""><span class="pln">acme</span><span class="pun">.</span><span class="pln">sh </span><span class="pun">--</span><span class="pln">installcert </span><span class="pun">-</span><span class="pln">d domain</span><span class="pun">.</span><span class="pln">com </span><span class="pun">--</span><span class="pln">fullchain</span><span class="pun">-</span><span class="pln">file </span><span class="pun">/</span><span class="pln">etc</span><span class="pun">/</span><span class="pln">ssl</span><span class="pun">/</span><span class="pln">fullchain</span><span class="pun">.</span><span class="pln">cer </span><span class="pun">--</span><span class="pln">key</span><span class="pun">-</span><span class="pln">file </span><span class="pun">/</span><span class="pln">etc</span><span class="pun">/</span><span class="pln">ssl</span><span class="pun">/</span><span class="pln">domain</span><span class="pun">.</span><span class="pln">com</span><span class="pun">.</span><span class="pln">key </span><span class="pun">--</span><span class="pln">ecc</span></code></pre>
+
+
+
+<h2><br>安装网盘服务</h2>
+
+
+
+<p>协议回落需要一个网站，除非你有建站的需求，否则强烈我推荐 Cloudreve 网盘，简单方便，作为个人网络存储空间非常实用。</p>
+
+
+
+<pre class="wp-block-code"><code class="prettyprint prettyprinted" style=""><span class="pln">mkdir </span><span class="pun">/</span><span class="pln">usr</span><span class="pun">/</span><span class="kwd">local</span><span class="pun">/</span><span class="pln">bin</span><span class="pun">/</span><span class="pln">cloudreve </span><span class="pun">&amp;&amp;</span><span class="pln"> cd </span><span class="pun">/</span><span class="pln">usr</span><span class="pun">/</span><span class="kwd">local</span><span class="pun">/</span><span class="pln">bin</span><span class="pun">/</span><span class="pln">cloudreve
+wget https</span><span class="pun">:</span><span class="com">//github.com/cloudreve/Cloudreve/releases/download/3.4.2/cloudreve_3.4.2_linux_amd64.tar.gz</span><span class="pln">
+tar </span><span class="pun">-</span><span class="pln">zxvf cloudreve_3</span><span class="pun">.</span><span class="lit">4.2</span><span class="pln">_linux_amd64</span><span class="pun">.</span><span class="pln">tar</span><span class="pun">.</span><span class="pln">gz
+chmod </span><span class="pun">+</span><span class="pln">x </span><span class="pun">./</span><span class="pln">cloudreve
+</span><span class="pun">./</span><span class="pln">cloudreve</span></code></pre>
+
+
+
+<p>Cloudreve 在首次启动时，会创建初始管理员账号，请注意保管管理员密码，此密码只会在首次启动时出现。如果您忘记初始管理员密码，需要删除同级目录下的 cloudreve.db，重新启动主程序以初始化新的管理员账户。Cloudreve 默认会监听5212端口。你可以在浏览器中访问 http://服务器IP:5212 进入 Cloudreve。<br>接下来按 Ctrl+C 退出 Cloudreve，设置守护进程。</p>
+
+
+
+<pre class="wp-block-code"><code class="prettyprint prettyprinted" style=""><span class="pln">nano </span><span class="pun">/</span><span class="pln">usr</span><span class="pun">/</span><span class="pln">lib</span><span class="pun">/</span><span class="pln">systemd</span><span class="pun">/</span><span class="pln">system</span><span class="pun">/</span><span class="pln">cloudreve</span><span class="pun">.</span><span class="pln">service
+
+</span><span class="com"># 输入以下代码</span><span class="pln">
+</span><span class="pun">[</span><span class="typ">Unit</span><span class="pun">]</span><span class="pln">
+</span><span class="typ">Description</span><span class="pun">=</span><span class="typ">Cloudreve</span><span class="pln">
+</span><span class="typ">Documentation</span><span class="pun">=</span><span class="pln">https</span><span class="pun">:</span><span class="com">//docs.cloudreve.org</span><span class="pln">
+</span><span class="typ">After</span><span class="pun">=</span><span class="pln">network</span><span class="pun">.</span><span class="pln">target
+</span><span class="typ">After</span><span class="pun">=</span><span class="pln">mysqld</span><span class="pun">.</span><span class="pln">service
+</span><span class="typ">Wants</span><span class="pun">=</span><span class="pln">network</span><span class="pun">.</span><span class="pln">target
+
+</span><span class="pun">[</span><span class="typ">Service</span><span class="pun">]</span><span class="pln">
+</span><span class="typ">WorkingDirectory</span><span class="pun">=</span><span class="str">/usr/</span><span class="kwd">local</span><span class="pun">/</span><span class="pln">bin</span><span class="pun">/</span><span class="pln">cloudreve
+</span><span class="typ">ExecStart</span><span class="pun">=</span><span class="str">/usr/</span><span class="kwd">local</span><span class="pun">/</span><span class="pln">bin</span><span class="pun">/</span><span class="pln">cloudreve</span><span class="pun">/</span><span class="pln">cloudreve
+</span><span class="typ">Restart</span><span class="pun">=</span><span class="pln">on</span><span class="pun">-</span><span class="pln">abnormal
+</span><span class="typ">RestartSec</span><span class="pun">=</span><span class="lit">5s</span><span class="pln">
+</span><span class="typ">KillMode</span><span class="pun">=</span><span class="pln">mixed
+
+</span><span class="typ">StandardOutput</span><span class="pun">=</span><span class="kwd">null</span><span class="pln">
+</span><span class="typ">StandardError</span><span class="pun">=</span><span class="pln">syslog
+
+</span><span class="pun">[</span><span class="typ">Install</span><span class="pun">]</span><span class="pln">
+</span><span class="typ">WantedBy</span><span class="pun">=</span><span class="pln">multi</span><span class="pun">-</span><span class="pln">user</span><span class="pun">.</span><span class="pln">target</span></code></pre>
+
+
+
+<p>设置开机启动</p>
+
+
+
+<pre class="wp-block-code"><code class="prettyprint prettyprinted" style=""><span class="pln">systemctl start cloudreve
+systemctl enable cloudreve</span></code></pre>
+
+
+
+<p>设置 Cloudreve 配置文件并重启</p>
+
+
+
+<pre class="wp-block-code"><code class="prettyprint prettyprinted" style=""><span class="pln">nano </span><span class="pun">/</span><span class="pln">usr</span><span class="pun">/</span><span class="kwd">local</span><span class="pun">/</span><span class="pln">bin</span><span class="pun">/</span><span class="pln">cloudreve</span><span class="pun">/</span><span class="pln">conf</span><span class="pun">.</span><span class="pln">ini
+
+</span><span class="com"># 添加以下代码</span><span class="pln">
+</span><span class="pun">[</span><span class="typ">System</span><span class="pun">]</span><span class="pln">
+</span><span class="typ">Mode</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> master
+</span><span class="typ">Debug</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">false</span><span class="pln">
+</span><span class="typ">Listen</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="pun">:</span><span class="lit">5212</span><span class="pln">
+
+</span><span class="pun">[</span><span class="typ">UnixSocket</span><span class="pun">]</span><span class="pln">
+</span><span class="typ">Listen</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> </span><span class="str">/run/</span><span class="pln">cloudreve</span><span class="pun">.</span><span class="pln">sock
+
+</span><span class="com"># 重启 CLoudreve 服务</span><span class="pln">
+systemctl restart cloudreve</span></code></pre>
+
+
+
+<h2><br>安装 Xray</h2>
+
+
+
+<p>推荐用管理员模式安装</p>
+
+
+
+<pre class="wp-block-code"><code class="prettyprint prettyprinted" style=""><span class="pln">bash </span><span class="pun">-</span><span class="pln">c </span><span class="str">"$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)"</span><span class="pln"> </span><span class="pun">@</span><span class="pln"> install </span><span class="pun">-</span><span class="pln">u root</span></code></pre>
+
+
+
+<p>脚本安装了这些文件</p>
+
+
+
+<pre class="wp-block-code"><code class="prettyprint prettyprinted" style=""><span class="pln">installed</span><span class="pun">:</span><span class="pln"> </span><span class="str">/usr/</span><span class="kwd">local</span><span class="pun">/</span><span class="pln">bin</span><span class="pun">/</span><span class="pln">xray
+installed</span><span class="pun">:</span><span class="pln"> </span><span class="str">/usr/</span><span class="kwd">local</span><span class="pun">/</span><span class="pln">etc</span><span class="pun">/</span><span class="pln">xray</span><span class="com">/*.json
+installed: /usr/local/share/xray/geoip.dat
+installed: /usr/local/share/xray/geosite.dat
+installed: /var/log/xray/access.log
+installed: /var/log/xray/error.log
+installed: /etc/systemd/system/xray.service
+installed: /etc/systemd/system/xray@.service</span></code></pre>
+
+
+
+<p>Xray 服务是这样管理的</p>
+
+
+
+<pre class="wp-block-code"><code class="prettyprint prettyprinted" style=""><span class="com"># 测试 Xray 配置文件是否可用</span><span class="pln">
+xray </span><span class="pun">-</span><span class="pln">test </span><span class="pun">-</span><span class="pln">config </span><span class="pun">/</span><span class="pln">usr</span><span class="pun">/</span><span class="kwd">local</span><span class="pun">/</span><span class="pln">etc</span><span class="pun">/</span><span class="pln">xray</span><span class="pun">/</span><span class="pln">config</span><span class="pun">.</span><span class="pln">json
+</span><span class="com"># 开机启用 Xray</span><span class="pln">
+systemctl enable xray
+</span><span class="com"># 开启 Xray</span><span class="pln">
+systemctl start xray
+</span><span class="com"># 停止 Xary</span><span class="pln">
+systemctl stop xray
+</span><span class="com"># 重启 Xray</span><span class="pln">
+systemctl restart xray
+</span><span class="com"># 查看 Xray 服务状态</span><span class="pln">
+systemctl status xray </span><span class="pun">|</span><span class="pln"> cat</span></code></pre>
+
+
+
+<h2><br>配置 Xray</h2>
+
+
+
+<p>Nginx 和 Xray 共用443端口，一般就两种方案，就是它们俩谁做前端的问题。Xray 做前端，监听 443 端口，给 Vless 用，利用 vless+tcp+tls 强大的回落/分流特性，实现 Trojan 和 Nginx 共用 443 端口。Nginx 做前端，监听 443 端口，给网站用，利用 Nginx SNI，实现 Vless 、Trojan 和 gRPC 共用 443 端口。</p>
+
+
+
+<p>本文采用的是前端 Nginx 用 SNI 分流，后端使用 Xray(vless+xtls &amp; trojan+xtls &amp; Vless+gRPC)。 利用 Nginx 支持 SNI 分流特性，对 Vless+tcp 与 Trojan+tcp 进行 SNI 分流（四层转发），实现共用 443 端口。支持 Vless+tcp 与 Trojan+tcp 完美共存，支持各自 xtls 应用，但需多个域名来标记分流。Vless+tcp 以 h2 或 http/1.1 自适应协商连接，非 v2ray 的 web 连接回落给 Nginx。Trojan+tcp 以 h2 协商连接，非 v2ray 的 web 连接也回落给 Nginx。Vless 和 Trojan 均使用进程监听，提高性能，并启用&nbsp;PROXY protocol。</p>
+
+
+
+<p>以下代码实现了 Xray 服务中 Vless+xtls、Vless gRPC、Trojan+xtls、Trojan gRPC 四种组合协议共存，客户端可任选一种协议连接。</p>
+
+
+
+<pre class="wp-block-code"><code class="prettyprint prettyprinted" style=""><span class="pln">nano </span><span class="pun">/</span><span class="pln">usr</span><span class="pun">/</span><span class="kwd">local</span><span class="pun">/</span><span class="pln">etc</span><span class="pun">/</span><span class="pln">xray</span><span class="pun">/</span><span class="pln">config</span><span class="pun">.</span><span class="pln">json
+
+</span><span class="com"># 添加以下代码</span><span class="pln">
+</span><span class="pun">{</span><span class="pln">
+    </span><span class="str">"log"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+        </span><span class="str">"loglevel"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"warning"</span><span class="pln">
+    </span><span class="pun">},</span><span class="pln">
+    </span><span class="str">"inbounds"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">[</span><span class="pln">
+        </span><span class="pun">{</span><span class="pln">
+	    </span><span class="str">"listen"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"/dev/shm/vless.sock"</span><span class="pun">,</span><span class="pln">
+            </span><span class="str">"protocol"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"vless"</span><span class="pun">,</span><span class="pln">
+            </span><span class="str">"settings"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+                </span><span class="str">"clients"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">[</span><span class="pln">
+                    </span><span class="pun">{</span><span class="pln">
+                        </span><span class="str">"id"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"xxxxxx"</span><span class="pun">,</span><span class="pln"> </span><span class="com"># 修改为自己的UUID</span><span class="pln">
+                        </span><span class="str">"flow"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"xtls-rprx-direct"</span><span class="pln">
+                    </span><span class="pun">}</span><span class="pln">
+                </span><span class="pun">],</span><span class="pln">
+                </span><span class="str">"decryption"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"none"</span><span class="pun">,</span><span class="pln">
+                </span><span class="str">"fallbacks"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">[</span><span class="pln">
+                    </span><span class="pun">{</span><span class="pln">
+                        </span><span class="str">"alpn"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"h2"</span><span class="pun">,</span><span class="pln">
+                        </span><span class="str">"dest"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"/dev/shm/h2c.sock"</span><span class="pun">,</span><span class="pln">
+                        </span><span class="str">"xver"</span><span class="pun">:</span><span class="pln"> </span><span class="lit">2</span><span class="pln">
+                    </span><span class="pun">},</span><span class="pln">
+                    </span><span class="pun">{</span><span class="pln">
+                        </span><span class="str">"dest"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"/dev/shm/h1.sock"</span><span class="pun">,</span><span class="pln">
+                        </span><span class="str">"xver"</span><span class="pun">:</span><span class="pln"> </span><span class="lit">2</span><span class="pln">
+                    </span><span class="pun">}</span><span class="pln">
+                </span><span class="pun">]</span><span class="pln">
+            </span><span class="pun">},</span><span class="pln">
+            </span><span class="str">"streamSettings"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+                </span><span class="str">"network"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"tcp"</span><span class="pun">,</span><span class="pln">
+                </span><span class="str">"security"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"xtls"</span><span class="pun">,</span><span class="pln">
+                </span><span class="str">"xtlsSettings"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+                    </span><span class="str">"alpn"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">[</span><span class="pln">
+                        </span><span class="str">"h2"</span><span class="pun">,</span><span class="pln">
+                        </span><span class="str">"http/1.1"</span><span class="pln">
+                    </span><span class="pun">],</span><span class="pln">
+                    </span><span class="str">"minVersion"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"1.2"</span><span class="pun">,</span><span class="pln">
+                    </span><span class="str">"cipherSuites"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256:TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384:TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256"</span><span class="pun">,</span><span class="pln">
+                    </span><span class="str">"certificates"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">[</span><span class="pln">
+                        </span><span class="pun">{</span><span class="pln">
+                            </span><span class="str">"certificateFile"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"/etc/ssl/fullchain.cer"</span><span class="pun">,</span><span class="pln">
+                            </span><span class="str">"keyFile"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"/etc/ssl/domain.com.key"</span><span class="pun">,</span><span class="pln">
+                            </span><span class="str">"ocspStapling"</span><span class="pun">:</span><span class="pln"> </span><span class="lit">3600</span><span class="pln">
+                        </span><span class="pun">}</span><span class="pln">
+                    </span><span class="pun">]</span><span class="pln">
+                </span><span class="pun">},</span><span class="pln">
+                </span><span class="str">"tcpSettings"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+					</span><span class="str">"acceptProxyProtocol"</span><span class="pun">:</span><span class="pln"> </span><span class="kwd">true</span><span class="pln">
+				</span><span class="pun">}</span><span class="pln">
+            </span><span class="pun">}</span><span class="pln">
+        </span><span class="pun">},</span><span class="pln">
+        </span><span class="pun">{</span><span class="pln">
+	    </span><span class="str">"listen"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"/dev/shm/trojan.sock"</span><span class="pun">,</span><span class="pln">
+            </span><span class="str">"protocol"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"trojan"</span><span class="pun">,</span><span class="pln">
+            </span><span class="str">"settings"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+                </span><span class="str">"clients"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">[</span><span class="pln">
+                    </span><span class="pun">{</span><span class="pln">
+                        </span><span class="str">"password"</span><span class="pun">:</span><span class="str">"Your password"</span><span class="pun">,</span><span class="pln"> </span><span class="com"># 修改为自己的密码</span><span class="pln">
+                        </span><span class="str">"flow"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"xtls-rprx-direct"</span><span class="pln">
+                    </span><span class="pun">}</span><span class="pln">
+                </span><span class="pun">],</span><span class="pln">
+                </span><span class="str">"fallbacks"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">[</span><span class="pln">
+                    </span><span class="pun">{</span><span class="pln">
+                    	</span><span class="str">"alpn"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"h2"</span><span class="pun">,</span><span class="pln">
+                        </span><span class="str">"dest"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"/dev/shm/h2c.sock"</span><span class="pun">,</span><span class="pln">
+                        </span><span class="str">"xver"</span><span class="pun">:</span><span class="pln"> </span><span class="lit">2</span><span class="pln">
+                    </span><span class="pun">},</span><span class="pln">
+                    </span><span class="pun">{</span><span class="pln">
+                        </span><span class="str">"dest"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"/dev/shm/h1.sock"</span><span class="pun">,</span><span class="pln">
+                        </span><span class="str">"xver"</span><span class="pun">:</span><span class="pln"> </span><span class="lit">2</span><span class="pln">
+                    </span><span class="pun">}</span><span class="pln">
+                </span><span class="pun">]</span><span class="pln">
+            </span><span class="pun">},</span><span class="pln">
+            </span><span class="str">"streamSettings"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+                </span><span class="str">"network"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"tcp"</span><span class="pun">,</span><span class="pln">
+                </span><span class="str">"security"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"xtls"</span><span class="pun">,</span><span class="pln">
+                </span><span class="str">"xtlsSettings"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+                    </span><span class="str">"alpn"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">[</span><span class="pln">
+                        </span><span class="str">"h2"</span><span class="pln">
+                    </span><span class="pun">],</span><span class="pln">
+                    </span><span class="str">"minVersion"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"1.2"</span><span class="pun">,</span><span class="pln">
+                    </span><span class="str">"cipherSuites"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256:TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384:TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256"</span><span class="pun">,</span><span class="pln">
+                    </span><span class="str">"certificates"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">[</span><span class="pln">
+                        </span><span class="pun">{</span><span class="pln">
+                            </span><span class="str">"certificateFile"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"/etc/ssl/fullchain.cer"</span><span class="pun">,</span><span class="pln">
+                            </span><span class="str">"keyFile"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"/etc/ssl/domain.com.key"</span><span class="pun">,</span><span class="pln">
+                            </span><span class="str">"ocspStapling"</span><span class="pun">:</span><span class="pln"> </span><span class="lit">3600</span><span class="pln">
+                        </span><span class="pun">}</span><span class="pln">
+                    </span><span class="pun">]</span><span class="pln">
+                </span><span class="pun">},</span><span class="pln">
+                </span><span class="str">"tcpSettings"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+                	</span><span class="str">"acceptProxyProtocol"</span><span class="pun">:</span><span class="pln"> </span><span class="kwd">true</span><span class="pln">
+                </span><span class="pun">}</span><span class="pln">
+            </span><span class="pun">}</span><span class="pln">
+        </span><span class="pun">},</span><span class="pln">
+        </span><span class="pun">{</span><span class="pln">
+		</span><span class="str">"listen"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"/dev/shm/vgrpc.sock"</span><span class="pun">,</span><span class="pln">
+    	 	</span><span class="str">"protocol"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"vless"</span><span class="pun">,</span><span class="pln">
+     	  	</span><span class="str">"settings"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+                </span><span class="str">"clients"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">[</span><span class="pln">
+                    </span><span class="pun">{</span><span class="pln">
+                        </span><span class="str">"id"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"xxxxxx"</span><span class="pln"> </span><span class="com"># 修改为自己的UUID</span><span class="pln">
+                    </span><span class="pun">}</span><span class="pln">
+                </span><span class="pun">],</span><span class="pln">
+        		</span><span class="str">"decryption"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"none"</span><span class="pln">
+     	  	</span><span class="pun">},</span><span class="pln">
+     	  	</span><span class="str">"streamSettings"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+                </span><span class="str">"network"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"grpc"</span><span class="pun">,</span><span class="pln">
+       			</span><span class="str">"security"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"none"</span><span class="pun">,</span><span class="pln">
+       			</span><span class="str">"grpcSettings"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+                    </span><span class="str">"serviceName"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"vdngrpc"</span><span class="pln"> </span><span class="com"># 修改为自己的服务名称 与Nginx配置里一致</span><span class="pln">
+        		</span><span class="pun">}</span><span class="pln">
+      		</span><span class="pun">},</span><span class="pln">
+      		</span><span class="str">"sniffing"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+        		</span><span class="str">"enabled"</span><span class="pun">:</span><span class="pln"> </span><span class="kwd">true</span><span class="pun">,</span><span class="pln">
+        		</span><span class="str">"destOverride"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">[</span><span class="pln">
+         		 </span><span class="str">"http"</span><span class="pun">,</span><span class="pln">
+          		 </span><span class="str">"tls"</span><span class="pln">
+        		</span><span class="pun">]</span><span class="pln">
+      		</span><span class="pun">}</span><span class="pln">
+        </span><span class="pun">},</span><span class="pln">
+
+        </span><span class="pun">{</span><span class="pln">
+		</span><span class="str">"listen"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"/dev/shm/tgrpc.sock"</span><span class="pun">,</span><span class="pln">
+    	 	</span><span class="str">"protocol"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"trojan"</span><span class="pun">,</span><span class="pln">
+     	  	</span><span class="str">"settings"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+                </span><span class="str">"clients"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">[</span><span class="pln">
+                    </span><span class="pun">{</span><span class="pln">
+                        </span><span class="str">"password"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"xxxxxx"</span><span class="pln"> </span><span class="com"># 修改为自己的密码</span><span class="pln">
+                    </span><span class="pun">}</span><span class="pln">
+                </span><span class="pun">]</span><span class="pln">
+     	  	</span><span class="pun">},</span><span class="pln">
+     	  	</span><span class="str">"streamSettings"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+                </span><span class="str">"network"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"grpc"</span><span class="pun">,</span><span class="pln">
+       			</span><span class="str">"security"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"none"</span><span class="pun">,</span><span class="pln">
+       			</span><span class="str">"grpcSettings"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+                    </span><span class="str">"serviceName"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"tdngrpc"</span><span class="pln"> </span><span class="com"># 修改为自己的服务名称 与Nginx配置里一致</span><span class="pln">
+        		</span><span class="pun">}</span><span class="pln">
+      		</span><span class="pun">},</span><span class="pln">
+      		</span><span class="str">"sniffing"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+        		</span><span class="str">"enabled"</span><span class="pun">:</span><span class="pln"> </span><span class="kwd">true</span><span class="pun">,</span><span class="pln">
+        		</span><span class="str">"destOverride"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">[</span><span class="pln">
+         		 </span><span class="str">"http"</span><span class="pun">,</span><span class="pln">
+          		 </span><span class="str">"tls"</span><span class="pln">
+        		</span><span class="pun">]</span><span class="pln">
+      		</span><span class="pun">}</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+    </span><span class="pun">],</span><span class="pln">
+    </span><span class="str">"outbounds"</span><span class="pun">:</span><span class="pln"> </span><span class="pun">[</span><span class="pln">
+        </span><span class="pun">{</span><span class="pln">
+            </span><span class="str">"protocol"</span><span class="pun">:</span><span class="pln"> </span><span class="str">"freedom"</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+    </span><span class="pun">]</span><span class="pln">
+</span><span class="pun">}</span></code></pre>
+
+
+
+<p>重启 Xray 服务</p>
+
+
+
+<pre class="wp-block-code"><code class="prettyprint prettyprinted" style=""><span class="pln">systemctl restart xray</span></code></pre>
+
+
+
+<h2><br>安装 Nginx</h2>
+
+
+
+<p>Nginx 用 Docker 版本，使用很方便。不建议编译，费时又不方便升级。</p>
+
+
+
+<pre class="wp-block-code"><code class="prettyprint prettyprinted" style=""><span class="com"># 安装 Docker</span><span class="pln">
+wget </span><span class="pun">-</span><span class="pln">qO</span><span class="pun">-</span><span class="pln"> </span><span class="kwd">get</span><span class="pun">.</span><span class="pln">docker</span><span class="pun">.</span><span class="pln">com </span><span class="pun">|</span><span class="pln"> bash
+
+</span><span class="com"># 查看 Docker 版本</span><span class="pln">
+docker version
+
+</span><span class="com"># 设置 Docker 开机启动</span><span class="pln">
+systemctl start docker
+systemctl enable docker
+
+</span><span class="com"># 拉取镜像 其中 watchtower 会自动监测并更新镜像</span><span class="pln">
+docker pull nginx
+docker pull containrrr</span><span class="pun">/</span><span class="pln">watchtower</span></code></pre>
+
+
+
+<h2><br>配置 Nginx</h2>
+
+
+
+<p>因为需要多个域名来标记分流，所以事先应在 Cloudflare 里设置好二级域名。这里假设 v.domain.com 对应 Vless 协议，t.domain.com 对应 Trojan 协议。</p>
+
+
+
+<p>Nginx 配置文件是 /etc/nginx/nginx.conf</p>
+
+
+
+<pre class="wp-block-code"><code class="prettyprint prettyprinted" style=""><span class="pln">mkdir </span><span class="pun">/</span><span class="pln">etc</span><span class="pun">/</span><span class="pln">nginx
+nano </span><span class="pun">/</span><span class="pln">etc</span><span class="pun">/</span><span class="pln">nginx</span><span class="pun">/</span><span class="pln">nginx</span><span class="pun">.</span><span class="pln">conf
+
+</span><span class="com"># 添加以下代码</span><span class="pln">
+user  root</span><span class="pun">;</span><span class="pln">
+worker_processes </span><span class="kwd">auto</span><span class="pun">;</span><span class="pln">
+
+error_log  </span><span class="pun">/</span><span class="kwd">var</span><span class="pun">/</span><span class="pln">log</span><span class="pun">/</span><span class="pln">nginx</span><span class="pun">/</span><span class="pln">error</span><span class="pun">.</span><span class="pln">log</span><span class="pun">;</span><span class="pln">
+
+pid       </span><span class="pun">/</span><span class="pln">run</span><span class="pun">/</span><span class="pln">nginx</span><span class="pun">.</span><span class="pln">pid</span><span class="pun">;</span><span class="pln">
+
+events </span><span class="pun">{</span><span class="pln">
+    worker_connections </span><span class="lit">1024</span><span class="pun">;</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+
+stream </span><span class="pun">{</span><span class="pln">
+    map $ssl_preread_server_name $backend_name </span><span class="pun">{</span><span class="pln">
+        v</span><span class="pun">.</span><span class="pln">domain</span><span class="pun">.</span><span class="pln">com  vless</span><span class="pun">;</span><span class="pln">
+        t</span><span class="pun">.</span><span class="pln">domain</span><span class="pun">.</span><span class="pln">com trojan</span><span class="pun">;</span><span class="pln">
+        domain</span><span class="pun">.</span><span class="pln">com      web</span><span class="pun">;</span><span class="pln">
+        </span><span class="kwd">default</span><span class="pln">         web</span><span class="pun">;</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+
+    upstream vless </span><span class="pun">{</span><span class="pln">
+        server unix</span><span class="pun">:</span><span class="str">/dev/</span><span class="pln">shm</span><span class="pun">/</span><span class="pln">vless</span><span class="pun">.</span><span class="pln">sock</span><span class="pun">;</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+
+    upstream trojan </span><span class="pun">{</span><span class="pln">
+        server unix</span><span class="pun">:</span><span class="str">/dev/</span><span class="pln">shm</span><span class="pun">/</span><span class="pln">trojan</span><span class="pun">.</span><span class="pln">sock</span><span class="pun">;</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    
+    upstream web </span><span class="pun">{</span><span class="pln">
+        server unix</span><span class="pun">:</span><span class="str">/dev/</span><span class="pln">shm</span><span class="pun">/</span><span class="pln">web</span><span class="pun">.</span><span class="pln">sock</span><span class="pun">;</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+
+    server </span><span class="pun">{</span><span class="pln">
+        listen </span><span class="lit">443</span><span class="pun">;</span><span class="pln">
+        listen </span><span class="pun">[::]:</span><span class="lit">443</span><span class="pun">;</span><span class="pln">
+        ssl_preread on</span><span class="pun">;</span><span class="pln">
+        proxy_protocol on</span><span class="pun">;</span><span class="pln">
+        proxy_pass  $backend_name</span><span class="pun">;</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+
+http </span><span class="pun">{</span><span class="pln">
+    include       mime</span><span class="pun">.</span><span class="pln">types</span><span class="pun">;</span><span class="pln">
+    default_type  application</span><span class="pun">/</span><span class="pln">octet</span><span class="pun">-</span><span class="pln">stream</span><span class="pun">;</span><span class="pln">
+    
+    log_format  main  </span><span class="str">'$remote_addr - $remote_user [$time_local] "$request" '</span><span class="pln">
+                      </span><span class="str">'$status $body_bytes_sent "$http_referer" '</span><span class="pln">
+                      </span><span class="str">'"$http_user_agent" "$http_x_forwarded_for" '</span><span class="pln">
+                      </span><span class="str">'$proxy_protocol_addr:$proxy_protocol_port'</span><span class="pun">;</span><span class="pln">
+
+	access_log  </span><span class="pun">/</span><span class="kwd">var</span><span class="pun">/</span><span class="pln">log</span><span class="pun">/</span><span class="pln">nginx</span><span class="pun">/</span><span class="pln">access</span><span class="pun">.</span><span class="pln">log  main</span><span class="pun">;</span><span class="pln">
+    
+    sendfile on</span><span class="pun">;</span><span class="pln">
+    keepalive_timeout </span><span class="lit">65</span><span class="pun">;</span><span class="pln">
+    include </span><span class="pun">/</span><span class="pln">etc</span><span class="pun">/</span><span class="pln">nginx</span><span class="pun">/</span><span class="pln">conf</span><span class="pun">.</span><span class="pln">d</span><span class="com">/*.conf;
+}</span></code></pre>
+
+
+
+<p>Nginx 站点配置文件是 /etc/nginx/conf.d/default.conf</p>
+
+
+
+<pre class="wp-block-code"><code class="prettyprint prettyprinted" style=""><span class="pln">mkdir </span><span class="pun">/</span><span class="pln">etc</span><span class="pun">/</span><span class="pln">nginx</span><span class="pun">/</span><span class="pln">conf</span><span class="pun">.</span><span class="pln">d
+nano </span><span class="pun">/</span><span class="pln">etc</span><span class="pun">/</span><span class="pln">nginx</span><span class="pun">/</span><span class="pln">conf</span><span class="pun">.</span><span class="pln">d</span><span class="pun">/</span><span class="kwd">default</span><span class="pun">.</span><span class="pln">conf
+
+</span><span class="com"># 添加以下代码</span><span class="pln">
+server </span><span class="pun">{</span><span class="pln">
+    listen </span><span class="lit">80</span><span class="pun">;</span><span class="pln">
+    listen </span><span class="pun">[::]:</span><span class="lit">80</span><span class="pun">;</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> </span><span class="lit">301</span><span class="pln"> https</span><span class="pun">:</span><span class="com">//domain.com$request_uri;</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+
+server </span><span class="pun">{</span><span class="pln">
+    listen unix</span><span class="pun">:</span><span class="str">/dev/</span><span class="pln">shm</span><span class="pun">/</span><span class="pln">h1</span><span class="pun">.</span><span class="pln">sock proxy_protocol</span><span class="pun">;</span><span class="pln">
+    listen unix</span><span class="pun">:</span><span class="str">/dev/</span><span class="pln">shm</span><span class="pun">/</span><span class="pln">h2c</span><span class="pun">.</span><span class="pln">sock proxy_protocol</span><span class="pun">;</span><span class="pln"> 
+    set_real_ip_from unix</span><span class="pun">:;</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> </span><span class="lit">301</span><span class="pln"> https</span><span class="pun">:</span><span class="com">//domain.com$request_uri;</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+
+server </span><span class="pun">{</span><span class="pln">
+    listen unix</span><span class="pun">:</span><span class="str">/dev/</span><span class="pln">shm</span><span class="pun">/</span><span class="pln">web</span><span class="pun">.</span><span class="pln">sock ssl http2 proxy_protocol</span><span class="pun">;</span><span class="pln">
+    server_name domain</span><span class="pun">.</span><span class="pln">com www</span><span class="pun">.</span><span class="pln">domain</span><span class="pun">.</span><span class="pln">com</span><span class="pun">;</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">$host </span><span class="pun">!=</span><span class="pln"> domain</span><span class="pun">.</span><span class="pln">com</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln"> </span><span class="kwd">return</span><span class="pln"> </span><span class="lit">301</span><span class="pln"> https</span><span class="pun">:</span><span class="com">//domain.com$request_uri; }   </span><span class="pln">
+    set_real_ip_from unix</span><span class="pun">:;</span><span class="pln">
+    ssl_certificate </span><span class="pun">/</span><span class="pln">etc</span><span class="pun">/</span><span class="pln">ssl</span><span class="pun">/</span><span class="pln">fullchain</span><span class="pun">.</span><span class="pln">cer</span><span class="pun">;</span><span class="pln">
+    ssl_certificate_key </span><span class="pun">/</span><span class="pln">etc</span><span class="pun">/</span><span class="pln">ssl</span><span class="pun">/</span><span class="pln">domain</span><span class="pun">.</span><span class="pln">com</span><span class="pun">.</span><span class="pln">key</span><span class="pun">;</span><span class="pln">
+    ssl_session_cache    shared</span><span class="pun">:</span><span class="pln">SSL</span><span class="pun">:</span><span class="lit">1m</span><span class="pun">;</span><span class="pln">
+    ssl_session_timeout  </span><span class="lit">5m</span><span class="pun">;</span><span class="pln">
+    ssl_session_tickets  off</span><span class="pun">;</span><span class="pln">
+    ssl_protocols </span><span class="typ">TLSv1</span><span class="pun">.</span><span class="lit">2</span><span class="pln"> </span><span class="typ">TLSv1</span><span class="pun">.</span><span class="lit">3</span><span class="pun">;</span><span class="pln">
+    ssl_ciphers  TLS_AES_128_GCM_SHA256</span><span class="pun">:</span><span class="pln">TLS_AES_256_GCM_SHA384</span><span class="pun">:</span><span class="pln">TLS_CHACHA20_POLY1305_SHA256</span><span class="pun">:</span><span class="pln">ECDHE</span><span class="pun">-</span><span class="pln">ECDSA</span><span class="pun">-</span><span class="pln">AES256</span><span class="pun">-</span><span class="pln">GCM</span><span class="pun">-</span><span class="pln">SHA384</span><span class="pun">:</span><span class="pln">ECDHE</span><span class="pun">-</span><span class="pln">ECDSA</span><span class="pun">-</span><span class="pln">AES128</span><span class="pun">-</span><span class="pln">GCM</span><span class="pun">-</span><span class="pln">SHA256</span><span class="pun">:</span><span class="pln">ECDHE</span><span class="pun">-</span><span class="pln">ECDSA</span><span class="pun">-</span><span class="pln">CHACHA20</span><span class="pun">-</span><span class="pln">POLY1305</span><span class="pun">;</span><span class="pln">
+    add_header </span><span class="typ">Strict</span><span class="pun">-</span><span class="typ">Transport</span><span class="pun">-</span><span class="typ">Security</span><span class="pln"> </span><span class="str">"max-age=31536000; includeSubDomains; preload"</span><span class="pln"> always</span><span class="pun">;</span><span class="pln">
+
+    location </span><span class="pun">/</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+		proxy_pass http</span><span class="pun">:</span><span class="com">//unix:/run/cloudreve.sock;</span><span class="pln">
+		client_max_body_size </span><span class="lit">20000m</span><span class="pun">;</span><span class="pln">
+		proxy_redirect     off</span><span class="pun">;</span><span class="pln">
+		proxy_buffer_size          </span><span class="lit">64k</span><span class="pun">;</span><span class="pln"> 
+		proxy_buffers              </span><span class="lit">32</span><span class="pln"> </span><span class="lit">32k</span><span class="pun">;</span><span class="pln"> 
+		proxy_busy_buffers_size    </span><span class="lit">128k</span><span class="pun">;</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+
+    location </span><span class="pun">/</span><span class="pln">vdngrpc </span><span class="pun">{</span><span class="pln"> </span><span class="com"># 修改为自己的服务名称 与xray配置里一致</span><span class="pln">
+		</span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">$request_method </span><span class="pun">!=</span><span class="pln"> </span><span class="str">"POST"</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+            </span><span class="kwd">return</span><span class="pln"> </span><span class="lit">404</span><span class="pun">;</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+        client_body_buffer_size </span><span class="lit">1m</span><span class="pun">;</span><span class="pln">
+        client_body_timeout </span><span class="lit">1h</span><span class="pun">;</span><span class="pln">
+        client_max_body_size </span><span class="lit">0</span><span class="pun">;</span><span class="pln">
+        grpc_read_timeout </span><span class="lit">1h</span><span class="pun">;</span><span class="pln">
+        grpc_send_timeout </span><span class="lit">1h</span><span class="pun">;</span><span class="pln">
+        grpc_pass grpc</span><span class="pun">:</span><span class="com">//unix:/dev/shm/vgrpc.sock;</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+
+    location </span><span class="pun">/</span><span class="pln">tdngrpc </span><span class="pun">{</span><span class="pln"> </span><span class="com"># 修改为自己的服务名称 与xray配置里一致</span><span class="pln">
+		</span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">$request_method </span><span class="pun">!=</span><span class="pln"> </span><span class="str">"POST"</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+            </span><span class="kwd">return</span><span class="pln"> </span><span class="lit">404</span><span class="pun">;</span><span class="pln">
+        </span><span class="pun">}</span><span class="pln">
+        client_body_buffer_size </span><span class="lit">1m</span><span class="pun">;</span><span class="pln">
+        client_body_timeout </span><span class="lit">1h</span><span class="pun">;</span><span class="pln">
+        client_max_body_size </span><span class="lit">0</span><span class="pun">;</span><span class="pln">
+        grpc_read_timeout </span><span class="lit">1h</span><span class="pun">;</span><span class="pln">
+        grpc_send_timeout </span><span class="lit">1h</span><span class="pun">;</span><span class="pln">
+        grpc_pass grpc</span><span class="pun">:</span><span class="com">//unix:/dev/shm/tgrpc.sock;</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+</span><span class="pun">}</span></code></pre>
+
+
+
+<h2><br>启动服务</h2>
+
+
+
+<p>运行 Docker Nginx。</p>
+
+
+
+<pre class="wp-block-code"><code class="prettyprint prettyprinted" style=""><span class="pln">docker run </span><span class="pun">--</span><span class="pln">network host </span><span class="pun">--</span><span class="pln">name nginx </span><span class="pun">-</span><span class="pln">v </span><span class="pun">/</span><span class="pln">etc</span><span class="pun">/</span><span class="pln">nginx</span><span class="pun">/</span><span class="pln">conf</span><span class="pun">.</span><span class="pln">d</span><span class="pun">:</span><span class="str">/etc/</span><span class="pln">nginx</span><span class="pun">/</span><span class="pln">conf</span><span class="pun">.</span><span class="pln">d </span><span class="pun">-</span><span class="pln">v </span><span class="pun">/</span><span class="pln">etc</span><span class="pun">/</span><span class="pln">nginx</span><span class="pun">/</span><span class="pln">nginx</span><span class="pun">.</span><span class="pln">conf</span><span class="pun">:</span><span class="str">/etc/</span><span class="pln">nginx</span><span class="pun">/</span><span class="pln">nginx</span><span class="pun">.</span><span class="pln">conf </span><span class="pun">-</span><span class="pln">v </span><span class="pun">/</span><span class="pln">run</span><span class="pun">/</span><span class="pln">cloudreve</span><span class="pun">.</span><span class="pln">sock</span><span class="pun">:</span><span class="str">/run/</span><span class="pln">cloudreve</span><span class="pun">.</span><span class="pln">sock </span><span class="pun">-</span><span class="pln">v </span><span class="pun">/</span><span class="pln">etc</span><span class="pun">/</span><span class="pln">ssl</span><span class="pun">/</span><span class="pln">fullchain</span><span class="pun">.</span><span class="pln">cer</span><span class="pun">:</span><span class="str">/etc/</span><span class="pln">ssl</span><span class="pun">/</span><span class="pln">fullchain</span><span class="pun">.</span><span class="pln">cer </span><span class="pun">-</span><span class="pln">v </span><span class="pun">/</span><span class="pln">etc</span><span class="pun">/</span><span class="pln">ssl</span><span class="pun">/</span><span class="pln">domain</span><span class="pun">.</span><span class="pln">com</span><span class="pun">.</span><span class="pln">key</span><span class="pun">:</span><span class="str">/etc/</span><span class="pln">ssl</span><span class="pun">/</span><span class="pln">domain</span><span class="pun">.</span><span class="pln">com</span><span class="pun">.</span><span class="pln">key </span><span class="pun">-</span><span class="pln">v </span><span class="pun">/</span><span class="pln">dev</span><span class="pun">/</span><span class="pln">shm</span><span class="pun">/</span><span class="pln">vless</span><span class="pun">.</span><span class="pln">sock</span><span class="pun">:</span><span class="str">/dev/</span><span class="pln">shm</span><span class="pun">/</span><span class="pln">vless</span><span class="pun">.</span><span class="pln">sock </span><span class="pun">-</span><span class="pln">v </span><span class="pun">/</span><span class="pln">dev</span><span class="pun">/</span><span class="pln">shm</span><span class="pun">/</span><span class="pln">trojan</span><span class="pun">.</span><span class="pln">sock</span><span class="pun">:</span><span class="str">/dev/</span><span class="pln">shm</span><span class="pun">/</span><span class="pln">trojan</span><span class="pun">.</span><span class="pln">sock </span><span class="pun">-</span><span class="pln">v </span><span class="pun">/</span><span class="pln">dev</span><span class="pun">/</span><span class="pln">shm</span><span class="pun">/</span><span class="pln">vgrpc</span><span class="pun">.</span><span class="pln">sock</span><span class="pun">:</span><span class="str">/dev/</span><span class="pln">shm</span><span class="pun">/</span><span class="pln">vgrpc</span><span class="pun">.</span><span class="pln">sock </span><span class="pun">-</span><span class="pln">v </span><span class="pun">/</span><span class="pln">dev</span><span class="pun">/</span><span class="pln">shm</span><span class="pun">/</span><span class="pln">tgrpc</span><span class="pun">.</span><span class="pln">sock</span><span class="pun">:</span><span class="str">/dev/</span><span class="pln">shm</span><span class="pun">/</span><span class="pln">tgrpc</span><span class="pun">.</span><span class="pln">sock </span><span class="pun">--</span><span class="pln">restart</span><span class="pun">=</span><span class="pln">always </span><span class="pun">-</span><span class="pln">d nginx</span></code></pre>
+
+
+
+<p>运行 Docker Watchtower 并自动监测更新软件</p>
+
+
+
+<pre class="wp-block-code"><code class="prettyprint prettyprinted" style=""><span class="pln">docker run </span><span class="pun">--</span><span class="pln">name watchtower </span><span class="pun">-</span><span class="pln">v </span><span class="pun">/</span><span class="kwd">var</span><span class="pun">/</span><span class="pln">run</span><span class="pun">/</span><span class="pln">docker</span><span class="pun">.</span><span class="pln">sock</span><span class="pun">:</span><span class="str">/var/</span><span class="pln">run</span><span class="pun">/</span><span class="pln">docker</span><span class="pun">.</span><span class="pln">sock </span><span class="pun">--</span><span class="pln">restart </span><span class="kwd">unless</span><span class="pun">-</span><span class="pln">stopped </span><span class="pun">-</span><span class="pln">d containrrr</span><span class="pun">/</span><span class="pln">watchtower </span><span class="pun">--</span><span class="pln">cleanup</span></code></pre>
+
+
+
+<p>接下来要启动 xray 服务，这里需要注意的是由于 Nginx 先行启动，在 /dev/shm 下生成了相关文件，导致 xray 服务无法正常使用，需要先清除掉。</p>
+
+
+
+<pre class="wp-block-code"><code class="prettyprint prettyprinted" style=""><span class="pln">docker stop nginx
+systemctl stop xray
+rm </span><span class="pun">-</span><span class="pln">rf </span><span class="pun">/</span><span class="pln">dev</span><span class="pun">/</span><span class="pln">shm</span><span class="com">/*
+systemctl restart xray
+docker start nginx</span></code></pre>
+
+
+
+<p>现在可以在浏览器里打开 domain.com，会自动跳转到 https://domain.com，页面就是 Cloudreve 网盘，用刚才保存的用户名和密码登录，可以配置 Cloudreve 网盘。</p>
+
+
+
+<h2>结束语</h2>
+
+
+
+<p>Windows 客户端推荐 v2rayN 和 q2ray，iPhone 客户端推荐 Shadowrocket，Android 客户端推荐 AXray 和 v2rayNG。</p>
+
+
+
+<p>注：使用 Vless+gRPC 协议，客户端添加节点时，域名用 Domain.com，流控留空白，传输协议选择 gRPC，伪装类型选择 gun，路径用上面代码里的 grpc（建议更改为自己的服务名称），底层安全传输协议选择 tls。</p>
+
+
+
+<p>用 <a rel="external" href="https://www.ssllabs.com/" target="_blank">ssllabs.com</a> 检测证书，显示为 A+，完美！</p>
+    </article>
+    <ul class="tags">
+        <li><a href="https://cnix.win/tag/nginx" rel="tag">Nginx</a></li><li><a href="https://cnix.win/tag/trojan" rel="tag">Trojan</a></li><li><a href="https://cnix.win/tag/vless" rel="tag">Vless</a></li><li><a href="https://cnix.win/tag/xray" rel="tag">Xray</a></li><li><a href="https://cnix.win/tag/xtls" rel="tag">Xtls</a></li>    </ul>
+    <nav class="nearbypost">
+        <div class="alignleft"><a href="https://cnix.win/131.html" rel="prev">Windows 10 修改音频设备名称</a></div>
+        <div class="alignright"><a href="https://cnix.win/136.html" rel="next">Windows 10 重建应用程序图标缩略图</a></div>
+    </nav>
+    </section><!-- Comments -->
+<section class="comments">
+    <div class="container" data-no-instant="">
+        <div id="comments" class="comments-area">
+                    </div>
+        	<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">发表评论 <small><a rel="nofollow" id="cancel-comment-reply-link" href="https://cnix.win/87.html#respond" style="display:none;">取消回复</a></small></h3><form action="https://cnix.win/wp-comments-post.php" method="post" id="commentform" class="comment-form"><p class="comment-notes"><span id="email-notes">您的电子邮箱地址不会被公开。</span> <span class="required-field-message" aria-hidden="true">必填项已用<span class="required" aria-hidden="true">*</span>标注</span></p><p class="comment-form-author"><label for="author">显示名称 <span class="required" aria-hidden="true">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" required="required"></p>
+<p class="comment-form-email"><label for="email">电子邮箱地址 <span class="required" aria-hidden="true">*</span></label> <input id="email" name="email" type="text" value="" size="30" maxlength="100" aria-describedby="email-notes" required="required"></p>
+<p class="comment-form-url"><label for="url">网站地址</label> <input id="url" name="url" type="text" value="" size="30" maxlength="200"></p>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes"> <label for="wp-comment-cookies-consent">在此浏览器中保存我的显示名称、邮箱地址和网站地址，以便下次评论时使用。</label></p>
+<p class="comment-form-comment"><label for="comment">评论 <span class="required" aria-hidden="true">*</span></label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p><p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="发表评论"> <input type="hidden" name="comment_post_ID" value="87" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p></form>	</div><!-- #respond -->
+	    </div>
+</section>
+
+<footer class="footer">
+    <section class="container">
+        <ul id="menu-bottom-menu" class="menu"><li id="menu-item-41" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-41"><a href="https://cnix.win/archives">存档</a></li>
+<li id="menu-item-42" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-42"><a href="https://cnix.win/about">关于</a></li>
+</ul>        <div style="display: flex;justify-content: space-between;">
+            <div class="left">
+                <span>© 2022 <a href="https://cnix.win/">CNIX</a></span>
+                            </div>
+            <div class="right">
+                <span>Theme by <a href="https://biji.io/" target="_blank">Adams</a></span>
+            </div>
+        </div>
+    </section>
+</footer>
+
+<div class="setting_tool iconfont">
+    <a class="back2top" style="display:none;"><i class="czs-arrow-up-l"></i></a>
+            <a class="home" href="https://cnix.win/"><i class="czs-home-l"></i></a>
+        <a class="sosearch"><i class="czs-search-l"></i></a>
+    <a class="socolor"><i class="czs-clothes-l"></i></a>
+    <div class="s">
+        <form method="get" action="https://cnix.win/" class="search">
+            <input class="search-key" name="s" autocomplete="off" placeholder="输入关键词..." type="text" value="" required="required">
+        </form>
+    </div>
+    <div class="c">
+        <ul>
+            <li class="color undefined">默认</li>
+            <li class="color sepia">护眼</li>
+            <li class="color night">夜晚</li>
+            <li class="hr"></li>
+            <li class="font serif">Serif</li>
+            <li class="font sans">Sans</li>
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript" id="ajax-comment-js-extra">
+/* <![CDATA[ */
+var themeAdminAjax = {"url":"https:\/\/cnix.win\/wp-admin\/admin-ajax.php"};
+var ajaxcomment = {"ajax_url":"https:\/\/cnix.win\/wp-admin\/admin-ajax.php","order":"asc","formpostion":"after"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Nginx SNI+Xray(Vless xtls &amp; Trojan xtls &amp; Vless gRPC &amp; Trojan gRPC) – CNIX_files/ajax-comment.js" id="ajax-comment-js"></script>
+<script type="text/javascript" src="./Nginx SNI+Xray(Vless xtls &amp; Trojan xtls &amp; Vless gRPC &amp; Trojan gRPC) – CNIX_files/comment-reply.min.js" id="comment-reply-js"></script>
+<script data-no-instant="">
+    (function ($) {
+                $.extend({
+            adamsOverload: function () {
+                $(".post_article a").attr("rel", "external");
+                $("a[rel='external']:not([href^='#']),a[rel='external nofollow']:not([href^='#'])").attr("target", "_blank");
+                $("a.vi,.gallery a,.attachment a").attr("rel", "");
+                                $.viewImage({
+                    'target': '.gallery a,.gallery img,.attachment a,.post_article img,.post_article a,a.vi',
+                    'exclude': '.readerswall img,.gallery a img,.attachment a img'
+                });
+                                Lately({
+                    'target': '.commentmetadata a,.infos time,.post-list time'
+                });
+                                prettyPrint();
+                
+                $('ul.links li a').each(function () {
+                    if ($(this).parent().find('.bg').length === 0) {
+                        $(this).parent().append('<div class="bg" style="background-image:url(https://www.google.com/s2/favicons?domain=' + $(this).attr("href") + ')"></div>')
+                    }
+                });
+
+                // * Safari
+                if (navigator.vendor.indexOf("Apple") > -1) {
+                    $("[srcset]").each((index, img) => {
+                        img.outerHTML = img.outerHTML;
+                    });
+                }
+            }
+        });
+    })(jQuery);
+        InstantClick.on('change', function (isInitialLoad) {
+        jQuery.adamsOverload();
+        if (isInitialLoad === false) {
+            // support MathJax
+            if (typeof MathJax !== 'undefined') MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            // support google code prettify
+            if (typeof prettyPrint !== 'undefined') prettyPrint();
+            // support 百度统计
+            if (typeof _hmt !== 'undefined') _hmt.push(['_trackPageview', location.pathname + location.search]);
+            // support google analytics
+            if (typeof ga !== 'undefined') ga('send', 'pageview', location.pathname + location.search);
+        }
+                if ($('.placard').length) {
+            $.get("https://v1.hitokoto.cn", (data) => {
+                $('.placard').text(data.hitokoto);
+            });
+        }
+            });
+    InstantClick.on('wait', function () {
+        // pjax href click
+    });
+    InstantClick.on('fetch', function () {
+        // pjax begin
+    });
+    InstantClick.on('receive', function () {
+        // pjax end
+    });
+    InstantClick.init('mousedown');
+    </script>
+<!--网站效率：0.039秒内查询了49次数据库-->
+
+
+</body></html>
